@@ -1,6 +1,6 @@
-#NoEnv
-#SingleInstance, Force
+﻿#SingleInstance, Force
 #Persistent
+#EscapeChar ¤
 SetWorkingDir, %A_ScriptDir%
 CoordMode, Pixel, Screen
 Menu, Tray, Icon, cmd.ico
@@ -236,15 +236,6 @@ process, close, voicemeeterpro.exe
 sleep, 500
 run, C:\Program Files (x86)\VB\Voicemeeter\voicemeeterpro.exe
 return
-
-
-
-
-
-
-
-
-
 
 
 
@@ -594,4 +585,4 @@ return
 ^#!Numpad1::SnapActiveWindow("bottom","left","third")
 ^#!Numpad9::SnapActiveWindow("top","right","third")
 ^#!Numpad6::SnapActiveWindow("middle","right","third")
-^#!Numpad3::SnapActiveWindow("bottom","right","third")
+^#!Numpad3::SnapActiveWindow("bottom","right","third")r
