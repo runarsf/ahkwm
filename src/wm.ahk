@@ -1,68 +1,19 @@
-﻿#SingleInstance, Force
+﻿#SingleInstance Force
 #Persistent
-SetWorkingDir, %A_ScriptDir%
-CoordMode, Pixel, Screen
-Menu, Tray, Icon, cmd.ico
-Menu, Tray, Add ; divider
-Menu, Tray, Add, Settings, Settings
-
-
-/*TaskBar_Hide() {
-	WinHide,ahk_class Shell_TrayWnd ;Kill TaskBar
-	WinHide,Start ahk_class Button
-}
-*/
-TaskBar_Hide()
-~LWin Up::return ;Kill Windows keys
-~RWin Up::return
-return
-
-#l::DllCall("LockWorkStation")
-#^q::!F4
-#r::run %appdata%\Microsoft\Windows\Start Menu\Programs\System Tools\run.lnk
-
-+Esc:: ; escape to restore TaskBar and exit Script (For testing)
-WinShow,ahk_class Shell_TrayWnd 
-WinShow,Start ahk_class Button
-return
-
-#Include, src\setup.ahk
-
-Tippy(tipsHere, wait:=333)
-{
-	ToolTip, %tipsHere%,,,8
-	SetTimer, noTip, %wait%
-}
-noTip:
-ToolTip,,,,8
-return
-
-Settings:
-FileRead, config, config.ini
-Gui 1: +AlwaysOnTop +ToolWindow +LastFound
-Gui 1: Color, 252525, 303030
-Gui 1: Font, s12 cWhite, Source Code Pro
-Gui 1: Add, Edit, r35 w450 vFileEdit, %config%
-Gui 1: Font, s10, Consolas
-Gui 1: Add, Button, gSaveButton, Save
-Gui 1: Show,, Settings
-return
-SaveButton:
-Gui 1: Submit, NoHide
-FileDelete, config.ini
-FileAppend, %FileEdit%, config.ini
-reload
-return
-1GuiClose:
-Gui 1: Destroy
-reload
-return
+DetectHiddenWindows, On
+SetTitleMatchMode 2
+SetWorkingDir %A_ScriptDir%
+#EscapeChar ¤
 
 IniRead, wmOnTop, config.ini, Settings, wmOnTop,
 IniRead, wmMaxiMin, config.ini, Settings, wmMaxiMin,
 IniRead, wmWinMove, config.ini, Settings, wmWinMove,
 IniRead, wmResize, config.ini, Settings, wmResize,
 IniRead, wmNoBorder, config.ini, Settings, wmNoBorder,
+
+border := 1
+
+~LWin Up::return
 
 ; Always on top
 #space::
@@ -182,8 +133,18 @@ return
 #b::
 if wmNoBorder = 1
 {
-	WinSet, Style, Toggle -0xC00000, A
-	return
+	if border = 0
+	{
+		WinSet, Style, Toggle -0xC00000, A
+		border := 1
+		return
+	}
+	else if border = 1
+	{
+		WinSet, Style, Toggle +0xC00000, A
+		border := 0
+		return
+	}
 } else {
 	return
 }
@@ -191,18 +152,25 @@ return
 
 ; Middle-mouse button on taskbar to open taskmanager
 #If WinActive("ahk_class Shell_TrayWnd") and WinActive("ahk_exe explorer.exe")
-	~MButton Up::
+~MButton Up::
 run, taskmgr.exe
 WinWait, ahk_class TaskManagerWindow
 WinActivate, ahk_class TaskManagerWindow
 return
 #IfWinNotActive, ahk_class Shell_TrayWnd
-	MButton::Mbutton
+MButton::Mbutton
 return
 #IfWinActive
-	
+
 ; Empty recycle bin
 #Del::
 FileRecycleEmpty
 MsgBox, Recycle bin emptied
+return
+
+; Restart VoiceMeeter Banana
+^+!r::
+process, close, voicemeeterpro.exe
+sleep, 500
+run, C:\Program Files (x86)\VB\Voicemeeter\voicemeeterpro.exe
 return
