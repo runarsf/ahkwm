@@ -12,7 +12,7 @@ Menu, Tray, Add, Settings, Settings
 	WinHide,Start ahk_class Button
 }
 */
-TaskBar_Hide()
+ ; TaskBar_Hide()
 ~LWin Up::return ;Kill Windows keys
 ~RWin Up::return
 return
@@ -45,7 +45,7 @@ Gui 1: Font, s12 cWhite, Source Code Pro
 Gui 1: Add, Edit, r35 w450 vFileEdit, %config%
 Gui 1: Font, s10, Consolas
 Gui 1: Add, Button, gSaveButton, Save
-Gui 1: Show,, Settings
+;Gui 1: Show,, Settings
 return
 SaveButton:
 Gui 1: Submit, NoHide
