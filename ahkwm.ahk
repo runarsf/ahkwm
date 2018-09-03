@@ -6,6 +6,14 @@ Menu, Tray, Icon, cmd.ico
 Menu, Tray, Add ; divider
 Menu, Tray, Add, Settings, Settings
 
+
+/*
+##########################
+#					#
+#		Source		#
+#					#
+##########################
+*/
 #Include, src\setup.ahk ; config setup
 #Include, src\wm.ahk 
 #Include, src\caps.ahk
