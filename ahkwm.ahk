@@ -6,11 +6,12 @@ Menu, Tray, Icon, cmd.ico
 Menu, Tray, Add ; divider
 Menu, Tray, Add, Settings, Settings
 
-#Include, setup.ahk ; config setup
+#Include, src\setup.ahk ; config setup
+#Include, src\wm.ahk 
 
+global cfgEdit
 
 settings() {
-	global cfgEdit
 	global visible
 	
 	if(WinExist("Settings") || visible == 1) {
@@ -29,9 +30,12 @@ settings() {
 	}
 }
 saveButton() {
-	global cfgEdit
 	Gui 1: Submit, Nohide
 	FileDelete, config.ini
 	FileAppend, %cfgEdit%, config.ini
 	reload
 }
+
+return
+GuiClose:
+	reload
