@@ -4,7 +4,7 @@
 
 ## Installation Steps
 1. Install [AutoHotKey](https://autohotkey.com/download/)
-2. [Download](https://github.com/runarsf/UtilityBar/archive/master.zip) the repo as a zip file or clone it with Git(Hub).
+2. [Download](https://github.com/runarsf/ahkwm/archive/master.zip) the repo as a zip file or clone it with Git(Hub).
 3. Extract the zip file into a directory you will remember.
 4. Run the **ahkwm.ahk** file.
 5. (Optional) To have the program run when you start up your computer, make a **shortcut** to the **host.ahk** file in your computer's startup folder. 
@@ -45,6 +45,6 @@ spotify | <kbd>NumpadDot</kbd> + <kbd>Numlock</kbd> | Stop media.
 spotify | <kbd>NumpadDot</kbd> + <kbd>Numpad9</kbd> | Increase Spotify desktop sound.
 spotify | <kbd>NumpadDot</kbd> + <kbd>Numpad6</kbd> | Decrease Spotify desktop sound.
 
-Anything else? Feel free to contact me <sub>*(Discord: Rufus#0001)*</sub> or [submit an issue](https://github.com/runarsf/UtilityBar/issues/new) on the GitHub repo!
+Anything else? Feel free to contact me <sub>*(Discord: Rufus#5599)*</sub> or [submit an issue](https://github.com/runarsf/ahkwm/issues/new) on the GitHub repo!
 
-<sub>UtilityBar v2018.06</sub>
+<sub>ahkwm v2018.09</sub>
