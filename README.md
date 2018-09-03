@@ -1,2 +1,2 @@
 # ahkwm
-ahkwm is a terrible i3wm clone for windows, made in AutoHotkey
+ahkwm is a terrible window manager for windows, made in ahk
