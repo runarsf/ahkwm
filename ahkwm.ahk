@@ -11,16 +11,24 @@ Menu, Tray, Add, Settings, Settings
 
 settings() {
 	global cfgEdit
-	FileRead, cfgContent, config.ini
-	Gui 1: +AlwaysOnTop +ToolWindow +LastFound +Resize
-	Gui 1: Color, 252525, 303030
-	Gui 1: Font, s12 cWhite, Consolas
-	Gui 1: Add, Edit, r35 w450 vcfgEdit, %cfgContent%
-	Gui 1: Font, s12, Consolas
-	Gui 1: Add, Button, h18 gSaveButton, Save
-	Gui 1: Show,, Settings
+	global visible
+	
+	if(WinExist("Settings") || visible == 1) {
+		reload
+	}
+	else {
+		FileRead, cfgContent, config.ini
+		Gui 1: +AlwaysOnTop +ToolWindow +LastFound +Resize
+		Gui 1: Color, 252525, 303030
+		Gui 1: Font, s12 cWhite, Consolas
+		Gui 1: Add, Edit, r35 w450 vcfgEdit, %cfgContent%
+		Gui 1: Font, s12, Consolas
+		Gui 1: Add, Button, gsaveButton h18, Save
+		Gui 1: Show,, Settings
+		visible := 1
+	}
 }
-SaveButton() {
+saveButton() {
 	global cfgEdit
 	Gui 1: Submit, Nohide
 	FileDelete, config.ini
