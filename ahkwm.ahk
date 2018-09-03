@@ -8,6 +8,9 @@ Menu, Tray, Add, Settings, Settings
 
 #Include, src\setup.ahk ; config setup
 #Include, src\wm.ahk 
+#Include, src\caps.ahk
+#Include, src\osu!.ahk
+#Include, src\spotify.ahk
 
 global cfgEdit
 
@@ -36,6 +39,15 @@ saveButton() {
 	reload
 }
 
+Tippy(tipsHere, wait:=333)
+{
+	ToolTip, %tipsHere%,,,8
+	SetTimer, noTip, %wait%
+}
+noTip:
+ToolTip,,,,8
+return
+
 return
 GuiClose:
-	reload
+reload
