@@ -23,9 +23,7 @@ Menu, Tray, Add, Settings, Settings
 global cfgEdit
 
 settings() {
-	global visible
-	
-	if(WinExist("Settings") || visible == 1) {
+	if(WinExist("ahkwm - Settings")) {
 		reload
 	}
 	else {
@@ -36,8 +34,7 @@ settings() {
 		Gui 1: Add, Edit, r35 w450 vcfgEdit, %cfgContent%
 		Gui 1: Font, s12, Consolas
 		Gui 1: Add, Button, gsaveButton h18, Save
-		Gui 1: Show,, Settings
-		visible := 1
+		Gui 1: Show,, ahkwm - Settings
 	}
 }
 saveButton() {
