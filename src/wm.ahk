@@ -1,4 +1,5 @@
 ﻿~LWin Up::return
+
 CoordMode, ToolTip, Screen
 
 ; Always on top
@@ -45,7 +46,7 @@ return
 #RButton::
 if winResize = 0
 	return
-else if wmResize = 1
+else if winResize = 1
 {
 	WinGetPos,,, W, H, A
 	MouseMove, W, H
@@ -115,7 +116,6 @@ if winMove = 1
 }
 return
 
-
 ; Middle-mouse button on taskbar to open taskmanager
 #If WinActive("ahk_class Shell_TrayWnd") and WinActive("ahk_exe explorer.exe")
 ~MButton Up::
@@ -128,8 +128,16 @@ MButton::Mbutton
 return
 #IfWinActive
 
-; Empty recycle bin
 #Del::
-FileRecycleEmpty
-MsgBox, Recycle bin emptied
-return
+MsgBox, 4, Recycle Bin, Are you sure you want to permanently delete all files in the recycle bin?
+IfMsgBox, Yes
+{
+	FileRecycleEmpty
+	MsgBox,, Recycle Bin, Recycle bin emptied
+	return
+}
+IfMsgBox, No
+	return
+
+
+!l::send, {LWin Down}{Space}{LWin Up}
