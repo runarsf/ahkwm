@@ -19,6 +19,7 @@ Menu, Tray, Add, Settings, Settings
 #Include, src\caps.ahk
 #Include, src\osu!.ahk
 #Include, src\spotify.ahk
+#Include, src\mouse-control.ahk
 
 global cfgEdit
 
@@ -42,19 +43,6 @@ saveButton() {
 	FileDelete, config.ini
 	FileAppend, %cfgEdit%, config.ini
 	reload
-}
-^s::
-{
-	IfWinActive, ahkwm - Settings
-	{
-		tippy("Settings saved")
-		sleep, 333
-		saveButton()
-	}
-	IfWinNotActive, ahkwm - Settings
-	{
-		Send, {Control Down}S{Control Up}
-	}
 }
 
 Tippy(tipsHere, wait:=333)
