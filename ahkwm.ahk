@@ -43,6 +43,19 @@ saveButton() {
 	FileAppend, %cfgEdit%, config.ini
 	reload
 }
+^s::
+{
+	IfWinActive, ahkwm - Settings
+	{
+		tippy("Settings saved")
+		sleep, 333
+		saveButton()
+	}
+	IfWinNotActive, ahkwm - Settings
+	{
+		Send, {Control Down}S{Control Up}
+	}
+}
 
 Tippy(tipsHere, wait:=333)
 {
