@@ -1,4 +1,6 @@
-﻿!CapsLock::
+﻿#EscapeChar `
+
+!CapsLock::
 GetKeyState, capsstate, CapsLock, T
 if capsstate = U
 	SetCapsLockState AlwaysOn
@@ -17,11 +19,18 @@ CapsLock & s::MouseMove, 0, 55, 5, R ; when you press s, mouse will move down 25
 CapsLock & a::MouseMove, -55, 0, 5, R ; when you press a, mouse will move left 25 pixels
 CapsLock & d::MouseMove, 55, 0, 5, R ; when you press d, mouse will move right 25 pixels
 
-; Markdown codeblock formatting
-CapsLock & b::
-lang = brainfuck
-return
+CapsLock & v::block("autohotkey")
 
-CapsLock & v::
-lang = autohotkey
-return
+block(lang) {
+	oclip := %Clipboard%
+	Clipboard := "```````"
+	send, %Clipboard%
+	send, %lang%
+	send, {Enter}
+	Clipboard := oclip
+	send, %Clipboard%
+	Clipboard := "```````"
+	send, %Clipboard%{Space}
+	Clipboard := oclip
+	send, {Enter}
+}

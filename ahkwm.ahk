@@ -1,5 +1,7 @@
 ﻿#SingleInstance, Force
 #Persistent
+SetBatchLines -1
+#UseHook
 SetWorkingDir, %A_ScriptDir%
 SetCapsLockState, AlwaysOff
 CoordMode, Pixel, Screen
@@ -20,7 +22,6 @@ Menu, Tray, Add, Settings, Settings
 #Include, src\caps.ahk
 #Include, src\osu!.ahk
 #Include, src\spotify.ahk
-#Include, src\mouse-control.ahk
 
 global cfgEdit
 
