@@ -126,7 +126,7 @@ run, taskmgr.exe
 WinWait, ahk_class TaskManagerWindow
 WinActivate, ahk_class TaskManagerWindow
 return
-
+#IfWinActive
 
 #Del::
 MsgBox, 4, Recycle Bin, Are you sure you want to permanently delete all files in the recycle bin?
