@@ -120,16 +120,13 @@ if winMove = 1
 return
 
 ; Middle-mouse button on taskbar to open taskmanager
-#If WinActive("ahk_class Shell_TrayWnd") and WinActive("ahk_exe explorer.exe")
+#If WinActive("ahk_class Shell_TrayWnd") or WinActive("ahk_class Shell_SecondaryTrayWnd") and WinActive("ahk_exe explorer.exe")
 ~MButton Up::
 run, taskmgr.exe
 WinWait, ahk_class TaskManagerWindow
 WinActivate, ahk_class TaskManagerWindow
 return
-#IfWinNotActive, ahk_class Shell_TrayWnd
-MButton::Mbutton
-return
-#IfWinActive
+
 
 #Del::
 MsgBox, 4, Recycle Bin, Are you sure you want to permanently delete all files in the recycle bin?
