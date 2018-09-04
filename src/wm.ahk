@@ -1,6 +1,6 @@
 ﻿~LWin Up::return
 
-CoordMode, ToolTip, Screen
+CoordMode, Pixel, Screen
 
 ; Always on top
 #space::
