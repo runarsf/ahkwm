@@ -1,6 +1,7 @@
 ﻿#SingleInstance, Force
 #Persistent
 SetWorkingDir, %A_ScriptDir%
+SetCapsLockState, AlwaysOff
 CoordMode, Pixel, Screen
 Menu, Tray, Icon, cmd.ico
 Menu, Tray, Add ; divider

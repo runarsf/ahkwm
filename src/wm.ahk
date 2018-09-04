@@ -89,7 +89,10 @@ return
 #LButton::
 if winMove = 1
 {
-	CoordMode, Mouse, Relative
+	if WinActive("ahk_class WorkerW") {
+		return
+	}
+		CoordMode, Mouse, Relative
 	MouseGetPos, cur_win_x, cur_win_y, window_id
 	WinGet, window_minmax, MinMax, ahk_id %window_id%
 	
