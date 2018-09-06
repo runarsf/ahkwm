@@ -22,6 +22,7 @@ Menu, Tray, Add, Settings, Settings
 #Include, src\caps.ahk
 #Include, src\osu!.ahk
 #Include, src\spotify.ahk
+#Include, src\browser.ahk
 
 global cfgEdit
 
