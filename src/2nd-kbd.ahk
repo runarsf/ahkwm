@@ -185,7 +185,6 @@ return
 
 
 
-return
 TaskbarMove(p_pos) {
 	label:="TaskbarMove_" p_pos
 	
