@@ -21,8 +21,9 @@ Menu, Tray, Add, Settings, Settings
 #Include, src\wm.ahk 
 #Include, src\caps.ahk
 #Include, src\osu!.ahk
-#Include, src\spotify.ahk
+#Include, src\media.ahk
 #Include, src\browser.ahk
+#Include, src\2nd-kbd.ahk
 
 global cfgEdit
 

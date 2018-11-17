@@ -4,12 +4,25 @@
 ; menu, tray, Icon, %A_ScriptDir%\icons\Spotify.ico
 
 ; Volume Up/Down (u and d only examples here)
+!+l::
 NumpadDot & NumpadSub::send, {Media_Next}
+!+j::
 NumpadDot & NumpadDiv::send, {Media_Prev}
+!+k::
 NumpadDot & NumpadMult::send, {Media_Play_Pause}
 NumpadDot & NumLock::send, {Media_Stop}
 NumpadDot & Numpad9::Spotify_HotkeySend("^{Up}")
 NumpadDot & Numpad6::Spotify_HotkeySend("^{Down}")
+
+/*
+Volume_Mute::ControlSend, ahk_parent, {m}, ahk_exe firefox.exe
+Volume_Down::ControlSend, ahk_parent, {Down}, ahk_exe firefox.exe
+Volume_Up::ControlSend, ahk_parent, {Up}, ahk_exe firefox.exe
+Media_Play_Pause::ControlSend, ahk_parent, {k}, ahk_exe firefox.exe
+Media_Prev::ControlSend, ahk_parent, {+p}, ahk_exe firefox.exe
+Media_Next::ControlSend, ahk_parent, {+n}, ahk_exe firefox.exe
+Return
+*/
 
 ; Global variable to cache the Spotify Window ID once it's been found
 global cached_spotify_window := Get_Spotify_Id()

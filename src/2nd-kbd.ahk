@@ -16,7 +16,7 @@ WinActivate, ahk_exe LuaMacros.exe
 wincount := 0
 
 ~F24::
-FileRead, key, C:\Users\rufus\Documents\GitHub\2nd-keyboard\support files\keypressed.txt
+FileRead, key, D:\Home\git\2nd-keyboard\support files\keypressed.txt
 sleep, 150
 tippy(key)
 
@@ -185,21 +185,7 @@ return
 
 
 
-Tippy(tipsHere, wait:=333)
-{
-	ToolTip, %tipsHere%,,,8
-	SetTimer, noTip, %wait%
-}
-Tipped(tipsHere, wait:=1000)
-{
-	ToolTip, %tipsHere%,,,8
-	SetTimer, noTip, %wait%
-}
-noTip:
-ToolTip,,,,8
 return
-
-
 TaskbarMove(p_pos) {
 	label:="TaskbarMove_" p_pos
 	
