@@ -11,7 +11,9 @@ NumpadDot & NumpadDiv::send, {Media_Prev}
 !+k::
 NumpadDot & NumpadMult::send, {Media_Play_Pause}
 NumpadDot & NumLock::send, {Media_Stop}
+!+w::
 NumpadDot & Numpad9::Spotify_HotkeySend("^{Up}")
+!+s::
 NumpadDot & Numpad6::Spotify_HotkeySend("^{Down}")
 
 /*

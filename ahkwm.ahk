@@ -8,21 +8,17 @@ CoordMode, Pixel, Screen
 Menu, Tray, Icon, cmd.ico
 Menu, Tray, Add ; divider
 Menu, Tray, Add, Settings, Settings
-
+Menu, Tray, Add, Restart VBAN, rvban
 
 /*
-##########################
-#					#
-#		Source		#
-#					#
-##########################
-*/
+	IMPORTS
+*/	
 #Include, src\setup.ahk ; config setup
-#Include, src\wm.ahk 
+#Include, src\snap.ahk
+#Include, src\wm.ahk
 #Include, src\caps.ahk
 #Include, src\osu!.ahk
 #Include, src\media.ahk
-#Include, src\browser.ahk
 #Include, src\2nd-kbd.ahk
 
 global cfgEdit
@@ -48,7 +44,10 @@ saveButton() {
 	FileAppend, %cfgEdit%, config.ini
 	reload
 }
-
+rvban() {
+	Process, Close, voicemeeterpro.exe
+	run, C:\Program Files (x86)\VB\Voicemeeter\voicemeeterpro.exe
+}
 Tippy(tipsHere, wait:=333)
 {
 	ToolTip, %tipsHere%,,,8

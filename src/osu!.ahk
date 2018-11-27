@@ -126,9 +126,9 @@ otxt() {
 IniRead, osubinds, config.ini, osu!, osubinds
 if(osubinds = 1)
 {
-	;Numpad3::Numpad2
-	;z::Numpad2
-	;x::Numpad1
+	Numpad3::Numpad2
+	z::Numpad2
+	x::Numpad1
 	NumpadDot::LButton
 	Numpad9::Escape
 }
