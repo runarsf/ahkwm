@@ -1,0 +1,10 @@
+﻿CapsLock & PrintScreen::Numpad7
+CapsLock & ScrollLock::Numpad8
+CapsLock & Break::Numpad9
+CapsLock & Insert::Numpad4
+CapsLock & Home::Numpad5
+CapsLock & PgUp::Numpad6
+CapsLock & Delete::Numpad1
+CapsLock & End::Numpad2
+CapsLock & PgDn::Numpad3
+CapsLock & Up::Numpad0

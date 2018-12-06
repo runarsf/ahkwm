@@ -1,6 +1,20 @@
 ﻿~LWin Up::return
-
 CoordMode, Pixel, Screen
+/*followMouse()
+*/
+
+#r::Run C:\WINDOWS\system32\rundll32.exe shell32.dll`,#61
+
+; Example 1: Adjust volume by scrolling the mouse wheel over the taskbar.
+#If MouseIsOver("ahk_class Shell_TrayWnd")
+WheelUp::Send {Volume_Up}
+WheelDown::Send {Volume_Down}
+
+MouseIsOver(WinTitle) {
+	MouseGetPos,,, Win
+	return WinExist(WinTitle . " ahk_id " . Win)
+}
+#If
 
 ; Always on top
 #space::
@@ -17,9 +31,48 @@ if winOnTop = 1
 	sleep, 1000
 	ToolTip
 	return
-} 
+}
+/*
+followMouse() {
+	if(%xMouseFlag% ==)
+	SetTimer, WatchCursor, 100
+	return
+	
+	WatchCursor:
+	MouseGetPos, , , id
+	WinActivate,ahk_id %id%
+	return
+}
+*/
 
-#r::Run C:\WINDOWS\system32\rundll32.exe shell32.dll`,#61
+#wheeldown::
+{
+	WinGet, active_id, ID, A
+	WinGet, transpAmnt, Transparent, ahk_id %active_id%
+	if(transpAmnt == "") {
+		newTransp := 245
+	} else if(transpAmnt <= 10) {
+		newTransp := 10
+	} else {
+		newTransp := transpAmnt - 10
+	}
+	WinSet, Transparent, %newTransp%, ahk_id %active_id%
+	return
+}
+#wheelup::
+{
+	WinGet, active_id, ID, A
+	WinGet, transpAmnt, Transparent, ahk_id %active_id%
+	if(transpAmnt >= 245) {
+		newTransp := 255
+	} else if(transpAmnt == "") {
+		newTransp := Off
+	} else {
+		newTransp := transpAmnt + 10
+	}
+	WinSet, Transparent, %newTransp%, ahk_id %active_id%
+	return
+}
 
 ; Restore/Maximize with hotkey
 #f::
@@ -118,12 +171,12 @@ if winMove = 1
 ; Middle-mouse button on taskbar to open taskmanager
 #If WinActive("ahk_class Shell_TrayWnd") or WinActive("ahk_class Shell_SecondaryTrayWnd") and WinActive("ahk_exe explorer.exe")
 	~MButton Up::
-		run, taskmgr.exe
-		WinWait, ahk_class TaskManagerWindow
-		WinActivate, ahk_class TaskManagerWindow
-		return
+run, taskmgr.exe
+WinWait, ahk_class TaskManagerWindow
+WinActivate, ahk_class TaskManagerWindow
+return
 #IfWinActive
-
+	
 #Del::
 MsgBox, 4, Recycle Bin, Are you sure you want to permanently delete all files in the recycle bin?
 IfMsgBox, Yes

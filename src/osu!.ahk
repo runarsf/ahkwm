@@ -85,7 +85,7 @@ Gui, Destroy
 return
 
 #IfWinActive, ahk_exe osu!.exe
-	
+
 +AppsKey::
 ShortcutGui:
 IniRead, mods, config.ini, osu!, osumods
@@ -110,7 +110,17 @@ GuiControl, Hide, OK
 return
 
 AppsKey::otxt()
-!AppsKey::SendInput, %ovar%
+!AppsKey::over()
+
+over() {
+	IniRead, ovar, config.ini, osu!, ovar
+	sleep, 100
+	SendInput, %ovar%
+	sleep, 100
+	;Osu.key("Enter")
+	sleep, 100
+	return
+}
 
 otxt() {
 	IniRead, mods, config.ini, osu!, osumods
@@ -122,17 +132,13 @@ otxt() {
 	return
 }
 
-
+#If osubinds == 1
 IniRead, osubinds, config.ini, osu!, osubinds
-if(osubinds = 1)
-{
-	Numpad3::Numpad2
-	z::Numpad2
-	x::Numpad1
-	NumpadDot::LButton
-	Numpad9::Escape
-}
-else
-	return
+Numpad3::Numpad2
+z::Numpad2
+NumpadDot::LButton
+Numpad9::Escape
+return
+#If
 
 #IfWinActive

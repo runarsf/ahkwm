@@ -1,6 +1,4 @@
-﻿#SingleInstance Force
-#Persistent
-#InstallKeybdHook
+﻿#InstallKeybdHook
 ; menu, tray, Icon, %A_ScriptDir%\icons\Spotify.ico
 
 ; Volume Up/Down (u and d only examples here)

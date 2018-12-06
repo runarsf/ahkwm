@@ -1,18 +1,43 @@
 ﻿#SingleInstance, Force
 #Persistent
+;#HotkeyInterval 1000
+;#MaxHotkeysPerInterval 100
 SetBatchLines -1
 #UseHook
 SetWorkingDir, %A_ScriptDir%
 SetCapsLockState, AlwaysOff
 CoordMode, Pixel, Screen
+
+Menu, Tray, NoStandard
+Menu, Tray, Tip, ahkwm
 Menu, Tray, Icon, cmd.ico
-Menu, Tray, Add ; divider
+
+If ( !A_IsCompiled )
+{
+	Menu, AutoHotkey, Standard
+	Menu, Tray, Add, AutoHotkey, :AutoHotkey
+	Menu, Tray, Add
+}
+
+Menu, Tray, Add, Help, ExitSub
+Menu, Tray, Default, Help
+
+Menu, Feedback, Add, GitHub, ExitSub
+Menu, Feedback, Add, Mail, ExitSub
+Menu, Tray, Add, Feedback, :Feedback
+Menu, Tray, Add
+
 Menu, Tray, Add, Settings, Settings
+Menu, Tray, Add, Revert All Effects, ExitSub
 Menu, Tray, Add, Restart VBAN, rvban
+Menu, Tray, Add
+Menu, Tray, Add, Exit, ExitSub
+
+;http://www.enovatic.org/products/niftywindows/features/
 
 /*
 	IMPORTS
-*/	
+*/
 #Include, src\setup.ahk ; config setup
 #Include, src\snap.ahk
 #Include, src\wm.ahk
@@ -20,6 +45,7 @@ Menu, Tray, Add, Restart VBAN, rvban
 #Include, src\osu!.ahk
 #Include, src\media.ahk
 #Include, src\2nd-kbd.ahk
+#Include, src\tenkeyless.ahk
 
 global cfgEdit
 
@@ -57,6 +83,16 @@ noTip:
 ToolTip,,,,8
 return
 
+OnExit, ExitSub  
 return
+
+ExitSub:
+if A_ExitReason not in Logoff,Shutdown  ; Avoid spaces around the comma in this line.
+{
+	MsgBox, 4, , Are you sure you want to exit?
+	IfMsgBox, No
+		return
+}
+
 GuiClose:
 reload
