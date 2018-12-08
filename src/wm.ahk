@@ -15,7 +15,7 @@ MouseIsOver(WinTitle) {
 	return WinExist(WinTitle . " ahk_id " . Win)
 }
 #If
-
+	
 ; Always on top
 #space::
 if winOnTop = 1
@@ -32,17 +32,18 @@ if winOnTop = 1
 	ToolTip
 	return
 }
+
 /*
-followMouse() {
-	if(%xMouseFlag% ==)
-	SetTimer, WatchCursor, 100
-	return
-	
-	WatchCursor:
-	MouseGetPos, , , id
-	WinActivate,ahk_id %id%
-	return
-}
+	followMouse() {
+		if(%xMouseFlag% ==)
+			SetTimer, WatchCursor, 100
+		return
+		
+		WatchCursor:
+		MouseGetPos, , , id
+		WinActivate,ahk_id %id%
+		return
+	}
 */
 
 #wheeldown::

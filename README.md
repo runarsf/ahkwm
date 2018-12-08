@@ -1,6 +1,8 @@
 # ahkwm
 <sup>[AutoHotkey](https://autohotkey.com/download/) v1.1.28.00 or higher required to run.
 
+#### A neat way of managing your Windows environment through the art of [bodging](https://www.youtube.com/watch?v=lIFE7h3m40U) and [AHK](https://www.autohotkey.com/).
+
 ## Installation Steps
 1. Install [AutoHotKey](https://autohotkey.com/download/)
 2. [Download](https://github.com/runarsf/ahkwm/archive/master.zip) the repo as a zip file and extract it, or clone it with git.
