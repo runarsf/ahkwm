@@ -71,8 +71,8 @@ saveButton() {
 	reload
 }
 rvban() {
-	Process, Close, voicemeeterpro.exe
-	run, C:\Program Files (x86)\VB\Voicemeeter\voicemeeterpro.exe
+	Process, Close, voicemeeter8.exe
+	run, C:\Program Files (x86)\VB\Voicemeeter\voicemeeter8.exe
 }
 Tippy(tipsHere, wait:=333)
 {

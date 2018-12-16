@@ -132,13 +132,10 @@ otxt() {
 	return
 }
 
-#If osubinds == 1
-IniRead, osubinds, config.ini, osu!, osubinds
 Numpad3::Numpad2
 z::Numpad2
 NumpadDot::LButton
 Numpad9::Escape
 return
-#If
 
 #IfWinActive
