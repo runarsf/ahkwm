@@ -22,8 +22,8 @@ If ( !A_IsCompiled )
 Menu, Tray, Add, Help, ExitSub
 Menu, Tray, Default, Help
 
-Menu, Feedback, Add, GitHub, ExitSub
-Menu, Feedback, Add, Mail, ExitSub
+Menu, Feedback, Add, GitHub, github
+Menu, Feedback, Add, Mail, email
 Menu, Tray, Add, Feedback, :Feedback
 Menu, Tray, Add
 
@@ -46,6 +46,7 @@ Menu, Tray, Add, Exit, ExitSub
 #Include, src\media.ahk
 #Include, src\2nd-kbd.ahk
 #Include, src\tenkeyless.ahk
+#Include, src\dvorak.ahk
 
 global cfgEdit
 
@@ -73,6 +74,12 @@ saveButton() {
 rvban() {
 	Process, Close, voicemeeter8.exe
 	run, C:\Program Files (x86)\VB\Voicemeeter\voicemeeter8.exe
+}
+github() {
+	run https://github.com/runarsf/ahkwm
+}
+email() {
+	run mailto:runarsf@protonmail.com
 }
 Tippy(tipsHere, wait:=333)
 {

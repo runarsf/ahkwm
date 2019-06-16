@@ -3,7 +3,8 @@ CoordMode, Pixel, Screen
 /*followMouse()
 */
 
-#r::Run C:\WINDOWS\system32\rundll32.exe shell32.dll`,#61
+#r::run C:\WINDOWS\system32\rundll32.exe shell32.dll`,#61
+#e::run explorer.exe
 
 ; Example 1: Adjust volume by scrolling the mouse wheel over the taskbar.
 #If MouseIsOver("ahk_class Shell_TrayWnd")

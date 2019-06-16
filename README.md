@@ -47,4 +47,4 @@ osu! | <kbd>Numpad9</kbd> | Rebount to <kbd>Esc</kbd>.
 osu! | <kbd>z</kbd> | Rebount to <kbd>Numpad2</kbd>.
 osu! | <kbd>x</kbd> | Rebount to <kbd>Numpad1</kbd>.
 
-<sub>ahkwm v2018.09</sub>
+<sub>ahkwm v2019.06</sub>

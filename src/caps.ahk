@@ -18,6 +18,8 @@ CapsLock & w::Up
 CapsLock & s::Down
 CapsLock & a::Left
 CapsLock & d::Right
+CapsLock & ,::<
+CapsLock & .::>
 /*	
 CapsLock & w::MouseMove, 0, -55, 5, R ; when you press w, mouse will move up 25 pixels
 CapsLock & s::MouseMove, 0, 55, 5, R ; when you press s, mouse will move down 25 pixels
