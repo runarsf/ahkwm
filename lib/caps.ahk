@@ -3,9 +3,9 @@
 !CapsLock::
 GetKeyState, capsstate, CapsLock, T
 if capsstate = U
-	SetCapsLockState AlwaysOn
+  SetCapsLockState AlwaysOn
 else
-	SetCapsLockState AlwaysOff
+  SetCapsLockState AlwaysOff
 return
 
 CapsLock & r::MouseClick,WheelUp,,,10,0,D,R
@@ -29,15 +29,15 @@ CapsLock & d::MouseMove, 55, 0, 5, R ; when you press d, mouse will move right 2
 CapsLock & v::block("autohotkey")
 
 block(lang) {
-	oclip := %Clipboard%
-	Clipboard := "```````"
-	send, %Clipboard%
-	send, %lang%
-	send, {Enter}
-	Clipboard := oclip
-	send, %Clipboard%
-	Clipboard := "```````"
-	send, %Clipboard%{Space}
-	Clipboard := oclip
-	send, {Enter}
+  oclip := %Clipboard%
+  Clipboard := "```````"
+  send, %Clipboard%
+  send, %lang%
+  send, {Enter}
+  Clipboard := oclip
+  send, %Clipboard%
+  Clipboard := "```````"
+  send, %Clipboard%{Space}
+  Clipboard := oclip
+  send, {Enter}
 }

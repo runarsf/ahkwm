@@ -109,6 +109,8 @@ Gui, Add, Button, Default, OK
 GuiControl, Hide, OK
 return
 
+,::Lbutton
+.::RButton
 AppsKey::otxt()
 !AppsKey::over()
 

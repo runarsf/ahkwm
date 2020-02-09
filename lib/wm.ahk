@@ -172,13 +172,22 @@ if winMove = 1
 
 ; Middle-mouse button on taskbar to open taskmanager
 #If WinActive("ahk_class Shell_TrayWnd") or WinActive("ahk_class Shell_SecondaryTrayWnd") and WinActive("ahk_exe explorer.exe")
-	~MButton Up::
+~MButton Up::
 run, taskmgr.exe
 WinWait, ahk_class TaskManagerWindow
 WinActivate, ahk_class TaskManagerWindow
 return
 #IfWinActive
-	
+
+; Shift + Middle-mouse button on taskbar to open sound manager
+#If WinActive("ahk_class Shell_TrayWnd") or WinActive("ahk_class Shell_SecondaryTrayWnd") and WinActive("ahk_exe explorer.exe")
+~+MButton Up::
+run, control mmsys.cpl sounds
+WinWait, ahk_class #32770
+WinActivate, ahk_class #32770
+return
+#IfWinActive
+
 #Del::
 MsgBox, 4, Recycle Bin, Are you sure you want to permanently delete all files in the recycle bin?
 IfMsgBox, Yes
@@ -187,3 +196,19 @@ IfMsgBox, Yes
 	MsgBox,, Recycle Bin, Recycle bin emptied
 	return
 }
+/*
++WheelUp:: ; Next Window
+WinGetClass, CurrentActive, A
+WinGet, Instances, Count, ahk_class %CurrentActive%
+If Instances > 1
+	WinSet, Bottom,, A
+WinActivate, ahk_class %CurrentActive%
+return
+
++WheelDown:: ; Previous Window
+WinGetClass, CurrentActive, A
+WinGet, Instances, Count, ahk_class %CurrentActive%
+If Instances > 1
+	WinActivateBottom, ahk_class %CurrentActive%
+return
+*/
