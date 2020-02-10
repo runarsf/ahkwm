@@ -21,6 +21,23 @@ Gosub, CFG_LoadSettings
 Gosub, CFG_ApplySettings
 Gosub, TRY_TrayInit
 
+/*
+ * Hotkeys
+ */
+#Delete::FUN_EmptyRecycleBin()
+#LButton::FUN_SuperMove()
+#RButton::FUN_SuperResize()
+#f::FUN_FullscreenToggle()
+#Space::FUN_AlwaysOnTop()
+#WheelUp::FUN_IncreaseOpacity()
+#WheelDown::FUN_DecreaseOpacity()
+#If WinActive("ahk_class Shell_TrayWnd") or WinActive("ahk_class Shell_SecondaryTrayWnd") and WinActive("ahk_exe explorer.exe")
+WheelUp::FUN_IncreaseVolume()
+WheelDown::FUN_DecreaseVolume()
+~+MButton Up::FUN_AudioDevices()
+~MButton Up::FUN_TaskManager()
+#If
+
 Return
 
 	SYS_ExitHandler:
@@ -52,6 +69,12 @@ Return
 		Menu, Features, Add, Disable CapsLock, TRY_TrayEvent
 		Menu, Features, Add, Super Move, TRY_TrayEvent
 		Menu, Features, Add, Super Resize, TRY_TrayEvent
+		Menu, Features, Add, Super Del Empty Recycle Bin, TRY_TrayEvent
+		Menu, Features, Add, Shift MButton Taskbar Audio Devices, TRY_TrayEvent
+		Menu, Features, Add, MButton Taskbar Task Manager, TRY_TrayEvent
+		Menu, Features, Add, Super F Fullscreen Toggle, TRY_TrayEvent
+		Menu, Features, Add, Super Space Always On Top, TRY_TrayEvent
+		Menu, Features, Add, Super Wheel Opacity Control, TRY_TrayEvent
 		Menu, Tray, Add, Features, :Features
 		Menu, Options, Add, Set FFM Speed, TRY_TrayEvent
 		Menu, Options, Add, Set Resize Method, TRY_TrayEvent
@@ -130,6 +153,36 @@ Return
 			CFG_SuperResize := !CFG_SuperResize
 			Gosub, CFG_ApplySettings
 		}
+		if ( A_ThisMenuItem = "Super Del Empty Recycle Bin" )
+		{
+			CFG_EmptyRecycleBin := !CFG_EmptyRecycleBin
+			Gosub, CFG_ApplySettings
+		}
+		if ( A_ThisMenuItem = "Shift MButton Taskbar Audio Devices" )
+		{
+			CFG_AudioDevices := !CFG_AudioDevices
+			Gosub, CFG_ApplySettings
+		}
+		if ( A_ThisMenuItem = "MButton Taskbar Task Manager" )
+		{
+			CFG_TaskManager := !CFG_TaskManager
+			Gosub, CFG_ApplySettings
+		}
+		if ( A_ThisMenuItem = "Super F Fullscreen Toggle" )
+		{
+			CFG_FullscreenToggle := !CFG_FullscreenToggle
+			Gosub, CFG_ApplySettings
+		}
+		if ( A_ThisMenuItem = "Super Space Always On Top" )
+		{
+			CFG_AlwaysOnTop := !CFG_AlwaysOnTop
+			Gosub, CFG_ApplySettings
+		}
+		if ( A_ThisMenuItem = "Super Wheel Opacity Control" )
+		{
+			CFG_OpacityControl := !CFG_OpacityControl
+			Gosub, CFG_ApplySettings
+		}
 		if ( A_ThisMenuItem = "Reload" )
 			Reload
 		if ( A_ThisMenuItem = "Exit" )
@@ -160,6 +213,36 @@ Return
 			Menu, Features, Check, Super Resize
 		else
 			Menu, Features, UnCheck, Super Resize
+		
+		if ( CFG_EmptyRecycleBin )
+			Menu, Features, Check, Super Del Empty Recycle Bin
+		else
+			Menu, Features, UnCheck, Super Del Empty Recycle Bin
+		
+		if ( CFG_AudioDevices )
+			Menu, Features, Check, Shift MButton Taskbar Audio Devices
+		else
+			Menu, Features, UnCheck, Shift MButton Taskbar Audio Devices
+		
+		if ( CFG_TaskManager )
+			Menu, Features, Check, MButton Taskbar Task Manager
+		else
+			Menu, Features, UnCheck, MButton Taskbar Task Manager
+		
+		if ( CFG_FullscreenToggle )
+			Menu, Features, Check, Super F Fullscreen Toggle
+		else
+			Menu, Features, UnCheck, Super F Fullscreen Toggle
+		
+		if ( CFG_AlwaysOnTop )
+			Menu, Features, Check, Super Space Always On Top
+		else
+			Menu, Features, UnCheck, Super Space Always On Top
+		
+		if ( CFG_OpacityControl )
+			Menu, Features, Check, Super Wheel Opacity Control
+		else
+			Menu, Features, UnCheck, Super Wheel Opacity Control
 	Return
 
 	/*
@@ -169,20 +252,32 @@ Return
 	CFG_LoadSettings:
 		CFG_IniFile = %A_ScriptDir%\%SYS_ScriptNameNoExt%.ini
 		IniRead, CFG_FocusFollowMouse, %CFG_IniFile%, Features, CFG_FocusFollowMouse, 0
-		IniRead, CFG_FocusFollowMouseSpeed, %CFG_IniFile%, Options, CFG_FocusFollowMouseSpeed, 200
 		IniRead, CFG_DisableCapsLock, %CFG_IniFile%, Features, CFG_DisableCapsLock, 0
 		IniRead, CFG_SuperMove, %CFG_IniFile%, Features, CFG_SuperMove, 1
 		IniRead, CFG_SuperResize, %CFG_IniFile%, Features, CFG_SuperResize, 1
+		IniRead, CFG_EmptyRecycleBin, %CFG_IniFile%, Features, CFG_EmptyRecycleBin, 1
+		IniRead, CFG_AudioDevices, %CFG_IniFile%, Features, CFG_AudioDevices, 1
+		IniRead, CFG_TaskManager, %CFG_IniFile%, Features, CFG_TaskManager, 1
+		IniRead, CFG_FullscreenToggle, %CFG_IniFile%, Features, CFG_FullscreenToggle, 1
+		IniRead, CFG_AlwaysOnTop, %CFG_IniFile%, Features, CFG_AlwaysOnTop, 1
+		IniRead, CFG_OpacityControl, %CFG_IniFile%, Features, CFG_OpacityControl, 0
+		IniRead, CFG_FocusFollowMouseSpeed, %CFG_IniFile%, Options, CFG_FocusFollowMouseSpeed, 200
 		IniRead, CFG_SuperResizeMethod, %CFG_IniFile%, Options, CFG_SuperResizeMethod, 2
 	Return
 
 	CFG_SaveSettings:
 		CFG_IniFile = %A_ScriptDir%\%SYS_ScriptNameNoExt%.ini
 		IniWrite, %CFG_FocusFollowMouse%, %CFG_IniFile%, Features, CFG_FocusFollowMouse
-		IniWrite, %CFG_FocusFollowMouseSpeed%, %CFG_IniFile%, Options, CFG_FocusFollowMouseSpeed
 		IniWrite, %CFG_DisableCapsLock%, %CFG_IniFile%, Features, CFG_DisableCapsLock
 		IniWrite, %CFG_SuperMove%, %CFG_IniFile%, Features, CFG_SuperMove
 		IniWrite, %CFG_SuperResize%, %CFG_IniFile%, Features, CFG_SuperResize
+		IniWrite, %CFG_EmptyRecycleBin%, %CFG_IniFile%, Features, CFG_EmptyRecycleBin
+		IniWrite, %CFG_AudioDevices%, %CFG_IniFile%, Features, CFG_AudioDevices
+		IniWrite, %CFG_TaskManager%, %CFG_IniFile%, Features, CFG_TaskManager
+		IniWrite, %CFG_FullscreenToggle%, %CFG_IniFile%, Features, CFG_FullscreenToggle
+		IniWrite, %CFG_AlwaysOnTop%, %CFG_IniFile%, Features, CFG_AlwaysOnTop
+		IniWrite, %CFG_OpacityControl%, %CFG_IniFile%, Features, CFG_OpacityControl
+		IniWrite, %CFG_FocusFollowMouseSpeed%, %CFG_IniFile%, Options, CFG_FocusFollowMouseSpeed
 		IniWrite, %CFG_SuperResizeMethod%, %CFG_IniFile%, Options, CFG_SuperResizeMethod
 	Return
 
@@ -191,26 +286,72 @@ Return
 			SetTimer, FUN_FocusHandler, %CFG_FocusFollowMouseSpeed%
 		else
 			SetTimer, FUN_FocusHandler, Off
+
 		if ( CFG_DisableCapsLock )
-			Gosub, FUN_DisableCapsLock
+			SetCapsLockState, AlwaysOff
 		else
-			Gosub, FUN_EnableCapsLock
+			SetCapsLockState, Off
 
 		if ( CFG_SuperMove )
-		{
 			Hotkey, #LButton, On
-			#LButton::FUN_SuperMove()
-		}
 		else
 			Hotkey, #LButton, Off
 	
 		if ( CFG_SuperResize )
-		{
 			Hotkey, #RButton, On
-			#RButton::FUN_SuperResize()
-		}
 		else
 			Hotkey, #RButton, Off
+
+		if ( CFG_EmptyRecycleBin )
+			Hotkey, #Delete, On
+		else
+			Hotkey, #Delete, Off
+		
+		/*
+		if ( CFG_AudioDevices )
+			Hotkey, ~+MButton Up, On
+		else
+			Hotkey, ~+MButton Up, Off
+		
+		if ( CFG_TaskManager )
+			Hotkey, ~MButton Up, On
+		else
+			Hotkey, ~MButton Up, Off
+		*/
+		
+		if ( CFG_FullscreenToggle )
+			Hotkey, #f, On
+		else
+			Hotkey, #f, Off
+		
+		if ( CFG_AlwaysOnTop )
+			Hotkey, #Space, On
+		else
+			Hotkey, #Space, Off
+		
+		if ( CFG_OpacityControl )
+		{
+			Hotkey, #WheelUp, On
+			Hotkey, #WheelDown, On
+		}
+		else
+		{
+			Hotkey, #WheelUp, Off
+			Hotkey, #WheelDown, Off
+		}
+		
+		/*
+		if ( CFG_VolumeControl )
+		{
+			Hotkey, WheelUp, On
+			Hotkey, WheelDown, On
+		}
+		else
+		{
+			Hotkey, WheelUp, Off
+			Hotkey, WheelDown, Off
+		}
+		*/
 	Return
 
 	/*
@@ -260,18 +401,10 @@ Return
 			}
 	Return
 
-	FUN_DisableCapsLock:
-		SetCapsLockState, AlwaysOff
-	Return
-
-	FUN_EnableCapsLock:
-		SetCapsLockState, Off
-	Return
-
 	FUN_SuperMove()
 	{
 		if WinActive("ahk_class WorkerW") 
-			return
+			Return
 		CoordMode, Mouse, Relative
 		MouseGetPos, cur_win_x, cur_win_y, window_id
 		WinGet, window_minmax, MinMax, ahk_id %window_id%
@@ -314,7 +447,6 @@ Return
 			}
 			WinGetPos,,, W, H, A
 			MouseMove, W/2, H/2
-			Return
 		}
 		else if ( CFG_SuperResizeMethod = 2 )
 		{
@@ -333,7 +465,100 @@ Return
 			}
 			WinGetPos, , ,W,H,A
 			MouseMove, W/2, H/2
-			return
 		}
 	}
-	Return
+	
+	FUN_EmptyRecycleBin()
+	{
+		MsgBox, 4, Recycle Bin, Are you sure you want to permanently delete all files in the recycle bin?
+		IfMsgBox, Yes
+		{
+			FileRecycleEmpty
+			MsgBox,, Recycle Bin, Recycle bin emptied
+		}
+	}
+	
+	FUN_TaskManager()
+	{
+		run, taskmgr.exe
+		WinWait, ahk_class TaskManagerWindow
+		WinActivate, ahk_class TaskManagerWindow
+	}
+	
+	FUN_AudioDevices()
+	{
+		run, control mmsys.cpl sounds
+		WinWait, ahk_class #32770
+		WinActivate, ahk_class #32770
+	}
+	
+	FUN_FullscreenToggle()
+	{
+		WinGet, active_id, ID, A
+		WinGet, checkmax, MinMax, A
+		if (checkmax == 1)
+		{
+			WinGet, active_id, ID, A
+			WinRestore, ahk_id %active_id%
+		}
+		else
+		{
+			WinGetClass, class, ahk_id %active_id%
+			if class not in ahk_class WorkerW,Shell_TrayWnd, Button, SysListView32,Progman,#32768 
+				WinMaximize, ahk_id %active_id%
+		}
+	}
+	
+	FUN_AlwaysOnTop()
+	{
+		Winset, AlwaysOnTop, Toggle, A
+		mousegetpos, x, y, possum
+		WinGet, ExStyle, ExStyle, ahk_id %possum%
+		if (ExStyle & 0x8)
+			ExStyle = AlwaysOnTop
+		else
+			ExStyle = Not AlwaysOnTop
+		ToolTip, %exstyle%
+		sleep, 1000
+		ToolTip
+	}
+	
+	FUN_IncreaseOpacity()
+	{
+		WinGet, active_id, ID, A
+		WinGet, transpAmnt, Transparent, ahk_id %active_id%
+		if (transpAmnt >= 245)
+			newTransp := 255
+		else if (transpAmnt == "")
+			newTransp := Off
+		else
+			newTransp := transpAmnt + 10
+		WinSet, Transparent, %newTransp%, ahk_id %active_id%
+	}
+	
+	FUN_DecreaseOpacity()
+	{
+		WinGet, active_id, ID, A
+		WinGet, transpAmnt, Transparent, ahk_id %active_id%
+		if (transpAmnt == "")
+			newTransp := 245
+		else if (transpAmnt <= 10)
+			newTransp := 10
+		else
+			newTransp := transpAmnt - 10
+		WinSet, Transparent, %newTransp%, ahk_id %active_id%
+	}
+	
+	FUN_IncreaseVolume()
+	{
+		MouseGetPos,,, Win
+		if (WinExist("ahk_class Shell_TrayWnd ahk_id " . Win))
+			Send {Volume_Up}
+	}
+	
+	FUN_DecreaseVolume()
+	{
+		MouseGetPos,,, Win
+		if (WinExist("ahk_class Shell_TrayWnd ahk_id " . Win))
+			Send {Volume_Down}
+	}
