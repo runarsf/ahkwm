@@ -3,7 +3,7 @@
 #HotkeyInterval 1000         ; Display warning dialog after limit
 #MaxHotkeysPerInterval 100   ; Display warning dialog after limit
 #NoTrayIcon                  ; Disable tray icon
-;#UseHook                     ; Forces the use of the hook to implement all or some keyboard hotkeys
+#UseHook                     ; Forces the use of the hook to implement all or some keyboard hotkeys
 ;SetBatchLines -1             ; Set how fast the script will run (affects CPU)
 ;SetWorkingDir, %A_ScriptDir% ; Changes the script's current working directory
 ;SetCapsLockState, AlwaysOff  ; Set CapsLock state
@@ -24,7 +24,7 @@ Gosub, TRY_TrayInit
 Return
 
 	SYS_ExitHandler:
-		;Gosub, CFG_SaveSettings
+		Gosub, CFG_SaveSettings
 	ExitApp
 
 	/*
@@ -34,7 +34,7 @@ Return
 	TRY_TrayInit:
 		Menu, Tray, NoStandard
 		Menu, Tray, Tip, ahkwm nightly
-		Menu, Tray, Icon, favicon.ico
+		Menu, Tray, Icon, favicon.ico,, 1
 
 		if ( !A_IsCompiled )
 		{
@@ -49,11 +49,13 @@ Return
 		;Menu, Tray, Add, Feedback, :Feedback
 
 		Menu, Features, Add, Focus Follow Mouse, TRY_TrayEvent
-		Menu, Features, Add, Set FFM Speed, TRY_TrayEvent
 		Menu, Features, Add, Disable CapsLock, TRY_TrayEvent
 		Menu, Features, Add, Super Move, TRY_TrayEvent
 		Menu, Features, Add, Super Resize, TRY_TrayEvent
 		Menu, Tray, Add, Features, :Features
+		Menu, Options, Add, Set FFM Speed, TRY_TrayEvent
+		Menu, Options, Add, Set Resize Method, TRY_TrayEvent
+		Menu, Tray, Add, Options, :Options
 		Menu, Tray, Add
 	
 		Menu, Tray, Add, Reload, TRY_TrayEvent
@@ -72,7 +74,7 @@ Return
 		{
 			CFG_FocusFollowMouse := !CFG_FocusFollowMouse
 			Gosub, CFG_ApplySettings
-			Gosub, CFG_SaveSettings
+			;Gosub, CFG_SaveSettings
 		}
 		if ( A_ThisMenuItem = "Set FFM Speed" )
 		{
@@ -90,9 +92,27 @@ Return
 				GuiControl,, FFMSpeed, %CFG_FocusFollowMouseSpeed%ms
 			Return	
 			FFMSpeedGuiClose:
+				Gui FFMSpeed:Submit
 				Gui FFMSpeed:Cancel
 				Gosub, CFG_ApplySettings
-				Gosub, CFG_SaveSettings
+				;Gosub, CFG_SaveSettings
+			Return
+		}
+		if ( A_ThisMenuItem = "Set Resize Method" )
+		{
+			Gui, ResizeMethod:New,, Super Resize Method
+			Gui, ResizeMethod:Color, 2f343f, 434852
+			WinSet, Transparent, 230
+			Gui, ResizeMethod:Font, s10 cWhite
+			Gui, ResizeMethod:Add, DropDownList, vCFG_SuperResizeMethod, 1|2
+			GuiControl, Choose, CFG_SuperResizeMethod, %CFG_SuperResizeMethod%
+			Gui, Show
+			Return
+
+			ResizeMethodGuiClose:
+				Gui ResizeMethod:Submit
+				Gui ResizeMethod:Cancel
+				Gosub, CFG_ApplySettings
 			Return
 		}
 		if ( A_ThisMenuItem = "Disable CapsLock" )
@@ -101,15 +121,15 @@ Return
 			Gosub, CFG_ApplySettings
 		}
 		if ( A_ThisMenuItem = "Super Move" )
-			{
-				CFG_SuperMove := !CFG_SuperMove
-				Gosub, CFG_ApplySettings
-			}
+		{
+			CFG_SuperMove := !CFG_SuperMove
+			Gosub, CFG_ApplySettings
+		}
 		if ( A_ThisMenuItem = "Super Resize" )
-			{
-				CFG_SuperResize := !CFG_SuperResize
-				Gosub, CFG_ApplySettings
-			}
+		{
+			CFG_SuperResize := !CFG_SuperResize
+			Gosub, CFG_ApplySettings
+		}
 		if ( A_ThisMenuItem = "Reload" )
 			Reload
 		if ( A_ThisMenuItem = "Exit" )
@@ -149,19 +169,21 @@ Return
 	CFG_LoadSettings:
 		CFG_IniFile = %A_ScriptDir%\%SYS_ScriptNameNoExt%.ini
 		IniRead, CFG_FocusFollowMouse, %CFG_IniFile%, Features, CFG_FocusFollowMouse, 0
-		IniRead, CFG_FocusFollowMouseSpeed, %CFG_IniFile%, Features, CFG_FocusFollowMouseSpeed, 200
+		IniRead, CFG_FocusFollowMouseSpeed, %CFG_IniFile%, Options, CFG_FocusFollowMouseSpeed, 200
 		IniRead, CFG_DisableCapsLock, %CFG_IniFile%, Features, CFG_DisableCapsLock, 0
 		IniRead, CFG_SuperMove, %CFG_IniFile%, Features, CFG_SuperMove, 1
 		IniRead, CFG_SuperResize, %CFG_IniFile%, Features, CFG_SuperResize, 1
+		IniRead, CFG_SuperResizeMethod, %CFG_IniFile%, Options, CFG_SuperResizeMethod, 2
 	Return
 
 	CFG_SaveSettings:
 		CFG_IniFile = %A_ScriptDir%\%SYS_ScriptNameNoExt%.ini
 		IniWrite, %CFG_FocusFollowMouse%, %CFG_IniFile%, Features, CFG_FocusFollowMouse
-		IniWrite, %CFG_FocusFollowMouseSpeed%, %CFG_IniFile%, Features, CFG_FocusFollowMouseSpeed
+		IniWrite, %CFG_FocusFollowMouseSpeed%, %CFG_IniFile%, Options, CFG_FocusFollowMouseSpeed
 		IniWrite, %CFG_DisableCapsLock%, %CFG_IniFile%, Features, CFG_DisableCapsLock
 		IniWrite, %CFG_SuperMove%, %CFG_IniFile%, Features, CFG_SuperMove
 		IniWrite, %CFG_SuperResize%, %CFG_IniFile%, Features, CFG_SuperResize
+		IniWrite, %CFG_SuperResizeMethod%, %CFG_IniFile%, Options, CFG_SuperResizeMethod
 	Return
 
 	CFG_ApplySettings:
@@ -173,6 +195,22 @@ Return
 			Gosub, FUN_DisableCapsLock
 		else
 			Gosub, FUN_EnableCapsLock
+
+		if ( CFG_SuperMove )
+		{
+			Hotkey, #LButton, On
+			#LButton::FUN_SuperMove()
+		}
+		else
+			Hotkey, #LButton, Off
+	
+		if ( CFG_SuperResize )
+		{
+			Hotkey, #RButton, On
+			#RButton::FUN_SuperResize()
+		}
+		else
+			Hotkey, #RButton, Off
 	Return
 
 	/*
@@ -230,19 +268,16 @@ Return
 		SetCapsLockState, Off
 	Return
 
-	#LButton::
-	if winMove = 1
+	FUN_SuperMove()
 	{
 		if WinActive("ahk_class WorkerW") 
-		{
 			return
-		}
 		CoordMode, Mouse, Relative
 		MouseGetPos, cur_win_x, cur_win_y, window_id
 		WinGet, window_minmax, MinMax, ahk_id %window_id%
 
 		if window_minmax <> 0
-		return
+			return
 
 		CoordMode, Mouse, Screen
 		SetWinDelay, 0
@@ -254,5 +289,51 @@ Return
 			MouseGetPos, cur_x, cur_y
 			WinMove, ahk_id %window_id%,, (cur_x - cur_win_x), (cur_y - cur_win_y)
 		}
-		return
+		Return
 	}
+	
+	FUN_SuperResize()
+	{
+		global
+		if ( CFG_SuperResizeMethod = 1 )
+		{
+			WinGetPos,,, W, H, A
+			MouseMove, W, H
+			loop
+			{
+				if (!GetKeyState("RButton", "P"))
+				{
+					MouseGetPos, xpos, ypos 
+					while (!GetKeyState("RButton", "P"))
+					{
+						WinMove, A,,,, %xpos%, %ypos%
+						break
+					}
+					break
+				}
+			}
+			WinGetPos,,, W, H, A
+			MouseMove, W/2, H/2
+			Return
+		}
+		else if ( CFG_SuperResizeMethod = 2 )
+		{
+			WinGetPos, , , W, H, A
+			H -= 5
+			W -= 5
+			MouseMove, W, H
+			MouseClick,Left,,,,,D
+			loop
+			{
+				if (!GetKeyState("RButton", "P"))
+				{
+					MouseClick,Left,,,,,U
+					Break
+				}
+			}
+			WinGetPos, , ,W,H,A
+			MouseMove, W/2, H/2
+			return
+		}
+	}
+	Return
